@@ -9,7 +9,7 @@ var requestListener = function (request, response) {
    * about the client request - such as what URL the browser is
    * requesting. */
   var headers = defaultCorsHeaders;
-  headers['Content-Type'] = "text/plain";
+  headers['Content-Type'] = "application/json";
   var statusCode = 200;
   response.writeHead(statusCode, headers);
   console.log("Serving request type " + request.method + " for url " + request.url);
