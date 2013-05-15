@@ -1,6 +1,6 @@
 /* Import node's http module: */
 var http = require("http");
-
+var requestHandler = require("./request-handler.js");
 /* This is the callback function that will be called each time a
  * client (i.e.. a web browser) makes a request to our server. */
 var requestListener = function (request, response) {
@@ -8,6 +8,7 @@ var requestListener = function (request, response) {
   /* Request is an http.ServerRequest object containing various data
    * about the client request - such as what URL the browser is
    * requesting. */
+  requestHandler.handleRequest(request, response);
   console.log("Serving request type " + request.method + " for url " + request.url);
 
   /* "Status code" and "headers" are HTTP concepts that you can
