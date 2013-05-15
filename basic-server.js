@@ -8,24 +8,24 @@ var requestListener = function (request, response) {
   /* Request is an http.ServerRequest object containing various data
    * about the client request - such as what URL the browser is
    * requesting. */
-  requestHandler.handleRequest(request, response);
+  var headers = defaultCorsHeaders;
+  headers['Content-Type'] = "text/plain";
+  var statusCode = 200;
+  response.writeHead(statusCode, headers);
   console.log("Serving request type " + request.method + " for url " + request.url);
-
+  requestHandler.handleRequest(request, response);
   /* "Status code" and "headers" are HTTP concepts that you can
    * research on the web as and when it becomes necessary. */
-  var statusCode = 200;
 
   /* Without this line, this server wouldn't work.  See the note
    * below about CORS. */
-  var headers = defaultCorsHeaders;
 
-  headers['Content-Type'] = "text/plain";
+
 
   /* Response is an http.ServerRespone object containing methods for
    * writing our response to the client. Documentation for both request
    * and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html*/
-  response.writeHead(statusCode, headers);
   /* .writeHead() tells our server what HTTP status code to send back
    * to the client, and what headers to include on the response. */
 
@@ -33,7 +33,7 @@ var requestListener = function (request, response) {
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-  response.end("Hello, World!");
+  response.end();
 };
 
 /* These headers will allow Cross-Origin Resource Sharing.

@@ -10,4 +10,5 @@ exports.setData = function(key,message) {
   } else {
     dataHash[key] = [message];
   }
+  console.log(dataHash[key]);
 };
