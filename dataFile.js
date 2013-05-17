@@ -1,7 +1,7 @@
 var dataHash = {};
 var id = 0;
 exports.getData = function(key){
-  return dataHash[key];
+  return dataHash[key] || [];
 };
 
 exports.setData = function(key,message) {

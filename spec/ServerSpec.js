@@ -13,11 +13,12 @@ function StubRequest(url, method, postdata) {
       // turn postdata (dictionary object) into raw postdata
       // raw postdata looks like this:
       // username=jono&message=do+my+bidding
-      var fields = [];
-      for (var key in self._postData) {
-        fields.push(key + "=" + self._postData[key].replace(" ", "+"));
-      }
-      callback(fields.join("&"));
+      // var fields = [];
+      // for (var key in self._postData) {
+      //   fields.push(key + "=" + self._postData[key].replace(" ", "+"));
+      // }
+      // callback(fields.join("&"));
+      callback(JSON.stringify(self._postData));
     }
     if (type == "end") {
       callback();
@@ -65,7 +66,7 @@ describe("Node Server Request Listener Function", function() {
 
    handler.handleRequest(req, res);
 
-   expect(res._responseCode).toEqual(302);
+   expect(res._responseCode).toEqual(201);
    expect(res._data).toEqual("\n");
    expect(res._ended).toEqual(true);
 
