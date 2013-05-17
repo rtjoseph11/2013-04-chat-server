@@ -1,7 +1,6 @@
 var http = require("http");
 var requestHandler = require("./request-handler.js");
 var requestListener = function (request, response) {
-
   requestHandler.handleRequest(request, response);
 };
 
