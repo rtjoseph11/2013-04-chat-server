@@ -67,7 +67,7 @@ describe("Node Server Request Listener Function", function() {
    handler.handleRequest(req, res);
 
    expect(res._responseCode).toEqual(201);
-   expect(res._data).toEqual("\n");
+   expect(res._data).toEqual(JSON.stringify("\n"));
    expect(res._ended).toEqual(true);
 
    // Now if we request the log for that room,

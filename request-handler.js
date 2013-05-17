@@ -24,7 +24,6 @@ exports.handleRequest = function(request, response) {
       console.log("Responding to GET Request");
       response.end(JSON.stringify(dataFile.getData(target)));
     } else if (method === "POST"){
-      response.writeHead(201, headers);
       // We expect UTF8
       request.setEncoding('utf8');
       var body = "";
@@ -35,8 +34,16 @@ exports.handleRequest = function(request, response) {
       request.on('end', function(data){
         console.log("DATA DOWNLOADED");
         //need to add a try catch on the JSON parse
-        dataFile.setData(target,JSON.parse(body));
-        response.end('\n');
+        console.log(body);
+        try{
+          dataFile.setData(target,JSON.parse(body));
+          response.writeHead(201, headers);
+        } catch (e) {
+          response.writeHead(400, headers);
+          console.log(e);
+        } finally {
+          response.end(JSON.stringify('\n'));
+        }
       });
     } else if (method === "OPTIONS") {
       response.writeHead(200, headers);
