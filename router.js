@@ -14,7 +14,6 @@ var routes = {
     pattern: /^\/classes\/([a-z0-9]+)$/i,
     method: function(request, response, target){
       response.writeHead(200, headers);
-      console.log("Responding to GET Request");
       response.end(JSON.stringify(dataFile.getData(target)));
     }
   },
@@ -22,7 +21,7 @@ var routes = {
     pattern: /[^+]*/,
     method: function(request, response){
       response.writeHead(404, headers);
-      response.end();
+      response.end(JSON.stringify('\n'));
     }
   }
   ],
@@ -33,13 +32,9 @@ var routes = {
        request.setEncoding('utf8');
       var body = "";
       request.on('data', function(data){
-        console.log(data, typeof data);
         body += data;
       });
       request.on('end', function(data){
-        console.log("DATA DOWNLOADED");
-        //need to add a try catch on the JSON parse
-        console.log(body);
         try{
           dataFile.setData(target,JSON.parse(body));
           response.writeHead(201, headers);
@@ -56,7 +51,7 @@ var routes = {
     pattern: /[^+]*/,
     method: function(request, response){
       response.writeHead(404, headers);
-      response.end();
+      response.end(JSON.stringify('\n'));
     }
   }
   ],
@@ -64,16 +59,33 @@ var routes = {
   {
     pattern:/[^+]*/,
     method: function(request, response){
-      console.log("OPTIONS");
       response.writeHead(200, headers);
-      response.end();
+      response.end(JSON.stringify('\n'));
+    }
+  }
+  ],
+  "DELETE": [
+  {
+    pattern:/[^+]*/,
+    method: function(request, response){
+      response.writeHead(501, headers);
+      response.end(JSON.stringify('\n'));
+    }
+  }
+  ],
+  "PUT": [
+  {
+    pattern:/[^+]*/,
+    method: function(request, response){
+      response.writeHead(501, headers);
+      response.end(JSON.stringify('\n'));
     }
   }
   ]
 };
 
 exports.trailblazer = function(pathname,method,request,response){
-  routes[method].some(function(item){ //test for routes[method] to return 404 not found
+  routes[method].some(function(item){
     var matches = pathname.match(item.pattern);
     if (matches){
       item.method.apply(null, [request, response].concat(matches.slice(1)));
