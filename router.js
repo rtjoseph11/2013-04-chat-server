@@ -1,4 +1,5 @@
 var dataFile = require("./dataFile.js");
+var fs = require("fs");
 var defaultCorsHeaders = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -6,20 +7,42 @@ var defaultCorsHeaders = {
   "access-control-max-age": 10 // Seconds.
 };
 var headers = defaultCorsHeaders;
-headers['Content-Type'] = "application/json";
+
 
 var routes = {
   "GET" : [
   {
     pattern: /^\/classes\/([a-z0-9]+)$/i,
     method: function(request, response, target){
+      headers['Content-Type'] = "application/json";
       response.writeHead(200, headers);
       response.end(JSON.stringify(dataFile.getData(target)));
     }
   },
   {
+    pattern: /\/$/,
+    method: function(request,response){
+      fs.readFile('chatClient/index.html', 'utf8', function(err,data){
+      headers['Content-Type'] = "text/html";
+      response.writeHead(200,headers);
+        response.end(data);
+      });
+    }
+  },
+  {
+    pattern:/([^+]*)\.([^+]*)/,
+    method: function(request,response, path, filetype){
+      fs.readFile('chatClient/' + path + '.' + filetype, 'utf8', function(err,data){
+      headers['Content-Type'] = "text/" + filetype;
+      response.writeHead(200,headers);
+        response.end(data);
+      });
+    }
+  },
+  {
     pattern: /[^+]*/,
-    method: function(request, response){
+    method: function(request, response, target){
+      headers['Content-Type'] = "application/json";
       response.writeHead(404, headers);
       response.end(JSON.stringify('\n'));
     }
@@ -29,7 +52,8 @@ var routes = {
    {
      pattern: /^\/classes\/([a-z0-9]+)$/i,
      method: function(request, response, target){
-       request.setEncoding('utf8');
+      headers['Content-Type'] = "application/json";
+      request.setEncoding('utf8');
       var body = "";
       request.on('data', function(data){
         body += data;
@@ -50,6 +74,7 @@ var routes = {
    {
     pattern: /[^+]*/,
     method: function(request, response){
+      headers['Content-Type'] = "application/json";
       response.writeHead(404, headers);
       response.end(JSON.stringify('\n'));
     }
@@ -59,6 +84,7 @@ var routes = {
   {
     pattern:/[^+]*/,
     method: function(request, response){
+      headers['Content-Type'] = "application/json";
       response.writeHead(200, headers);
       response.end(JSON.stringify('\n'));
     }
@@ -68,6 +94,7 @@ var routes = {
   {
     pattern:/[^+]*/,
     method: function(request, response){
+      headers['Content-Type'] = "application/json";
       response.writeHead(501, headers);
       response.end(JSON.stringify('\n'));
     }
@@ -77,6 +104,7 @@ var routes = {
   {
     pattern:/[^+]*/,
     method: function(request, response){
+      headers['Content-Type'] = "application/json";
       response.writeHead(501, headers);
       response.end(JSON.stringify('\n'));
     }
