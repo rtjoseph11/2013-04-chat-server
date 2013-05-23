@@ -85,7 +85,19 @@ $('#sendMsg').on('click',function(){
   'text': $('#writeMsg').val(),
   'roomname': 'tucker'
 };
+ $('#writeMsg').val('');
   postIt(message);
+});
+$('#writeMsg').on('keyup',function(e){
+  if (e.which === 13){
+  var message = {
+  'username': window.location.search.slice(window.location.search.indexOf('=')+1),
+  'text': $('#writeMsg').val(),
+  'roomname': 'tucker'
+};
+ $('#writeMsg').val('');
+  postIt(message);
+}
 });
 $('#receiveMsg').on('click',function(){
     receiveIt();
